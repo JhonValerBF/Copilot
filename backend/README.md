@@ -81,8 +81,10 @@ Devuelve un nuevo `access_token` (300 segundos) y un nuevo `refresh_token`.
 Desde la carpeta `backend`:
 
 ```bash
+export JWT_SECRET="change-this-in-production-32-byte-secret"
+export ADMIN_USERNAME="admin"
+export ADMIN_PASSWORD="admin123"
 docker compose up --build
 ```
 
-El `docker-compose.yml` ya incluye las credenciales `admin/admin123`.
 Luego consumir la API en `http://localhost:8000`.
