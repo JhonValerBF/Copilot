@@ -1,23 +1,24 @@
 from datetime import datetime, timedelta, timezone
+import os
 from typing import Literal
+from uuid import uuid4
 
 import jwt
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 app = FastAPI(title="JWT FastAPI Demo", version="1.0.0")
 
-JWT_SECRET = "change-this-in-production-32-bytes"
+JWT_SECRET = os.getenv("JWT_SECRET", "change-this-in-production-32-bytes")
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_SECONDS = 300
 REFRESH_TOKEN_EXPIRE_SECONDS = 3600
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "admin123"
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
 
 
 class LoginRequest(BaseModel):
-    username: str | None = Field(default=None)
-    user: str | None = Field(default=None)
+    username: str
     password: str
 
 
@@ -39,14 +40,14 @@ def _create_token(subject: str, token_type: str, expires_in: int) -> str:
         "type": token_type,
         "iat": int(now.timestamp()),
         "exp": int((now + timedelta(seconds=expires_in)).timestamp()),
+        "jti": str(uuid4()),
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
 @app.post("/token", response_model=TokenResponse)
 def create_token(credentials: LoginRequest) -> TokenResponse:
-    username = credentials.username or credentials.user
-    if username != ADMIN_USERNAME or credentials.password != ADMIN_PASSWORD:
+    if credentials.username != ADMIN_USERNAME or credentials.password != ADMIN_PASSWORD:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",

@@ -40,7 +40,6 @@ Body JSON:
 ```
 
 También se acepta el campo `user` en lugar de `username`.
-
 Respuesta:
 
 ```json
