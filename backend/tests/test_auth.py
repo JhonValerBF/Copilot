@@ -2,7 +2,7 @@ import os
 
 from fastapi.testclient import TestClient
 
-os.environ["JWT_SECRET"] = "test-secret-that-is-at-least-32-bytes"
+os.environ["JWT_SECRET"] = "test-super-long-secret-key-for-jwt-signing-123456"
 os.environ["ADMIN_USERNAME"] = "admin"
 os.environ["ADMIN_PASSWORD"] = "admin123"
 

@@ -17,10 +17,17 @@ REFRESH_TOKEN_EXPIRE_SECONDS = 3600
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
-if not JWT_SECRET or not ADMIN_USERNAME or not ADMIN_PASSWORD:
-    raise RuntimeError(
-        "JWT_SECRET, ADMIN_USERNAME and ADMIN_PASSWORD environment variables are required."
+missing_vars = [
+    name
+    for name, value in (
+        ("JWT_SECRET", JWT_SECRET),
+        ("ADMIN_USERNAME", ADMIN_USERNAME),
+        ("ADMIN_PASSWORD", ADMIN_PASSWORD),
     )
+    if not value
+]
+if missing_vars:
+    raise RuntimeError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
 
 class LoginRequest(BaseModel):
