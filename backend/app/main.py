@@ -28,6 +28,8 @@ missing_vars = [
 ]
 if missing_vars:
     raise RuntimeError(f"Missing required environment variables: {', '.join(missing_vars)}")
+if len(JWT_SECRET) < 32:
+    raise RuntimeError("JWT_SECRET must be at least 32 characters long.")
 
 
 class LoginRequest(BaseModel):
