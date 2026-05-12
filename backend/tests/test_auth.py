@@ -1,4 +1,10 @@
+import os
+
 from fastapi.testclient import TestClient
+
+os.environ["JWT_SECRET"] = "test-secret-that-is-at-least-32-bytes"
+os.environ["ADMIN_USERNAME"] = "admin"
+os.environ["ADMIN_PASSWORD"] = "admin123"
 
 from app.main import ACCESS_TOKEN_EXPIRE_SECONDS, app
 

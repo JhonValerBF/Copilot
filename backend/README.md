@@ -17,6 +17,14 @@ poetry install
 
 ## Ejecutar localmente
 
+Definir variables de entorno:
+
+```bash
+export JWT_SECRET="change-this-in-production-32-byte-secret"
+export ADMIN_USERNAME="admin"
+export ADMIN_PASSWORD="admin123"
+```
+
 ```bash
 cd backend
 poetry run uvicorn app.main:app --reload
@@ -76,4 +84,5 @@ Desde la carpeta `backend`:
 docker compose up --build
 ```
 
+El `docker-compose.yml` ya incluye las credenciales `admin/admin123`.
 Luego consumir la API en `http://localhost:8000`.
